@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,15 +11,16 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { Link as RouterLink, useHistory, useParams } from "react-router-dom";
+// import Snackbar from "@material-ui/core/Snackbar";
+import { useSnackbar } from "notistack";
+import { login } from "@/api/user";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
+      <Link color="inherit">老桔</Link> {new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -46,15 +47,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
+  const history = useHistory();
+  const params = useParams();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const handleChangeUsername = (value: any) => {
+    setUsername(value.target.value);
+  };
+  const handleChangePassword = (value: any) => {
+    setPassword(value.target.value);
+  };
+  const onSignIn = async () => {
+    await login({ username, password });
+    enqueueSnackbar("登录成功", { variant: "success" });
+  };
   const classes = useStyles();
-
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}></Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          登录
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -62,10 +77,12 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="用户名"
+            name="username"
+            value={username}
+            onChange={handleChangeUsername}
+            autoComplete="username"
             autoFocus
           />
           <TextField
@@ -74,39 +91,41 @@ export default function SignIn() {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="密码"
             type="password"
             id="password"
+            value={password}
+            onChange={handleChangePassword}
             autoComplete="current-password"
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            label="记住我"
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={onSignIn}
           >
-            Sign In
+            登录
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
+              <Link component={RouterLink} to="sign-up" variant="body2">
+                忘记密码?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link component={RouterLink} to="sign-up" variant="body2">
+                注册
               </Link>
             </Grid>
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
+      <Box mt={8} mb={4}>
         <Copyright />
       </Box>
     </Container>

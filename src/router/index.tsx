@@ -7,23 +7,6 @@ import SignUp from "../views/SignUp";
 export default function MyRouter() {
   return (
     <Router>
-      <Switch>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/users">
-          <Users />
-        </Route>
-        <Route path="/sign-in">
-          <SignIn />
-        </Route>
-        <Route path="/sign-up">
-          <SignUp />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
       <nav>
         <ul>
           <li>
@@ -43,6 +26,23 @@ export default function MyRouter() {
           </li>
         </ul>
       </nav>
+      <Switch>
+        <Route path="/about">
+          <About />
+        </Route>
+        <Route path="/users">
+          <Users />
+        </Route>
+        <Route path="/sign-in">
+          <SignIn />
+        </Route>
+        <Route path="/sign-up">
+          <SignUp />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     </Router>
   );
 }
